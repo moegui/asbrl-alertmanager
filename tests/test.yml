@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  remote_user: root
+  vars:
+    PORT: "9093"
+  roles:
+    - asbrl-alertmanager

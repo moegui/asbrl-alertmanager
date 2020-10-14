@@ -1,0 +1,24 @@
+---
+- name: Create a directory if it does not exist
+  file:
+    path: /etc/alertmanager
+    state: directory
+    mode: '0755'    
+
+- name: Grafana config notification channel file
+  template:
+    src: alertmanager.yml.j2
+    dest: /etc/alertmanager/alertmanager.yml
+
+- name: Docker run
+  docker_container:
+    name: alertmanager
+    image: prom/alertmanager
+    pull: "yes"
+    recreate: "yes"
+    state: "started"
+    restart_policy: "unless-stopped"
+    volumes:
+      - /etc/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    published_ports:
+      - "0.0.0.0:{{ PORT }}:9093"
