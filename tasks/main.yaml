@@ -18,7 +18,9 @@
     recreate: "yes"
     state: "started"
     restart_policy: "unless-stopped"
-    command: "--web.external-url={{ EXTERNAL_URL }}"
+    command: 
+      - "--web.external-url={{ EXTERNAL_URL }}"
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
     volumes:
       - /etc/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     published_ports:
