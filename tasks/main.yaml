@@ -18,6 +18,7 @@
     recreate: "yes"
     state: "started"
     restart_policy: "unless-stopped"
+    command: "--web.external-url="
     volumes:
       - /etc/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     published_ports:
