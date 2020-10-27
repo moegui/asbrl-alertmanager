@@ -3,12 +3,13 @@
   file:
     path: /etc/alertmanager
     state: directory
-    mode: '0755'    
+    mode: 0755
 
 - name: Grafana config notification channel file
   template:
     src: alertmanager.yml.j2
     dest: /etc/alertmanager/alertmanager.yml
+    mode: 0644
 
 - name: Docker run
   docker_container:
@@ -18,7 +19,7 @@
     recreate: "yes"
     state: "started"
     restart_policy: "unless-stopped"
-    command: 
+    command:
       - "--web.external-url={{ EXTERNAL_URL }}"
       - "--config.file=/etc/alertmanager/alertmanager.yml"
     volumes:
