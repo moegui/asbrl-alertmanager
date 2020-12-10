@@ -33,7 +33,7 @@ Example Playbook
             PORT: "{{ PROM_ALERT_MANAGER_PORT }}" # Port where Alermanager will run
             EXTERNAL_URL: "http://{{ TRAEFIK_HOSTNAME }}:{{ PROM_ALERT_MANAGER_PORT }}"  # External URL to access Alertmanager, for example this URL will be attached in the Notifications
         tags:
-          - alertmanager
+        - asbrl-alertmanager
 
 License
 -------

@@ -4,12 +4,16 @@
     path: /etc/alertmanager
     state: directory
     mode: 0755
+  tags:
+  - asbrl-alertmanager
 
 - name: Grafana config notification channel file
   template:
     src: alertmanager.yml.j2
     dest: /etc/alertmanager/alertmanager.yml
     mode: 0644
+  tags:
+  - asbrl-alertmanager
 
 - name: Docker run
   docker_container:
@@ -26,3 +30,5 @@
       - /etc/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     published_ports:
       - "0.0.0.0:{{ PORT }}:9093"
+  tags:
+  - asbrl-alertmanager
