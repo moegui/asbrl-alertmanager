@@ -1,0 +1,38 @@
+---
+- name: Create a directory if it does not exist
+  file:
+    path: /etc/{{ CONTAINER_NAME }}
+    state: directory
+    mode: 0755
+  tags:
+  - asbrl-alertmanager
+
+- name: Grafana config notification channel file
+  template:
+    src: alertmanager.yml.j2
+    dest: /etc/{{ CONTAINER_NAME }}/alertmanager.yml
+    mode: 0644
+  tags:
+  - asbrl-alertmanager
+
+- name: Docker run
+  docker_container:
+    name: "{{ CONTAINER_NAME }}"
+    image: "prom/alertmanager:{{ BUILD }}"
+    pull: "yes"
+    recreate: "yes"
+    cpu_period: "{{ DOCKER_CPU_PERIOD }}"
+    cpu_quota: "{{ DOCKER_CPU_QUOTA }}"
+    memory: "{{ DOCKER_MEMORY }}"
+    state: "{{ CONTAINER_STATE }}"
+    restart_policy: "unless-stopped"
+    command:
+      - "--web.external-url={{ EXTERNAL_URL }}"
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+    volumes:
+      - /etc/{{ CONTAINER_NAME }}/alertmanager.yml:/etc/{{ CONTAINER_NAME }}/alertmanager.yml
+    published_ports: "{{ DOCKER_PUBLISHED_PORTS | default(omit) }}"
+    exposed_ports: "{{ DOCKER_EXPOSED_PORTS | default(omit) }}"
+    labels: "{{ DOCKER_LABELS | default(omit) }}"
+  tags:
+  - asbrl-alertmanager
